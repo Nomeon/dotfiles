@@ -1,0 +1,51 @@
+* {
+  border: none;
+  font-family: FiraCode Nerd Font, sans-serif;
+  font-size: 13px;
+  padding: 0 6px;
+}
+
+window#waybar {
+  background-color: transparent; /* NORD0 */
+  color: #D8DEE9; /* NORD4 */
+  border-radius: 8px;
+  margin: 6px 6px 0 6px;
+}
+
+#clock, #custom-weather, #battery, #network, #bluetooth, #backlight, #pulseaudio, #custom-power {
+  background-color: #3B4252;
+  padding: 4px 12px;
+  margin: 4px;
+  border-radius: 8px;
+}
+
+#clock {
+  background-color: #5E81AC;
+  color: #ECEFF4;
+}
+
+#custom-weather {
+  background-color: #81A1C1;
+  color: #2E3440;
+}
+
+#left, #center, #right {
+  background-color: rgba(46, 52, 64, 0.6); /* Nord1 with alpha */
+  border-radius: 16px;
+  padding: 6px 12px;
+  margin: 4px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+#workspaces button {
+  margin: 2px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #81A1C1;
+}
+
+#workspaces button.active {
+  background-color: #88C0D0;
+  color: #2E3440;
+}

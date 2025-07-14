@@ -1,0 +1,10 @@
+show=drun
+term=kitty
+location=center
+width=600
+height=400
+prompt=Search...
+insensitive=true
+allow_markup=false
+hide_scroll=true
+no_actions=true

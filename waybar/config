@@ -1,0 +1,73 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock", "custom/weather"],
+  "modules-right": ["pulseaudio", "backlight", "battery", "network", "bluetooth", "custom/power"],
+
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "format": "{name}",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "HDMI-A-1": [1, 2, 3, 4, 5]
+    }
+  },
+
+  "clock": {
+    "interval": 60,
+    "format": "{:%A, %H:%M}",
+    "tooltip": false
+  },
+
+  "custom/weather": {
+    "exec": "~/.config/waybar/scripts/weather.py",
+    "interval": 900,
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": false
+  },
+
+  "pulseaudio": {
+    "format": "{icon}  {volume}%",
+    "format-muted": " Muted",
+    "format-icons": ["", "", ""],
+    "scroll-step": 5,
+    "on-click": "pavucontrol"
+  },
+
+  "backlight": {
+    "on-scroll-up": "brightnessctl s +5%",
+    "on-scroll-down": "brightnessctl s 5%-",
+    "format": "{icon} {percent}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-icons": ["󰁺", "󰁼", "󰁾", "󰂁", "󰁹"]
+  },
+
+  "network": {
+    "format-wifi": "󰖩 {essid}",
+    "format-ethernet": "󰈁 {ipaddr}",
+    "format-disconnected": "󰖪",
+    "tooltip": false,
+    "on-click": "networkmanager_dmenu"
+  },
+
+  "bluetooth": {
+      "format-on": "󰂯",
+      "format-off": "󰂲",
+      "format-disabled": "", // an empty format will hide the module
+      "format-connected": "󰂱 {num_connections}",
+      "tooltip-format-connected": "{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+      "on-click": "~/.config/waybar/scripts/bluetooth_menu.sh"
+  },
+  "custom/power": {
+    "format": "󰐥",
+    "tooltip": "Power menu",
+    "on-click": "~/.config/waybar/scripts/power-menu.sh"
+  }
+}
