@@ -1,0 +1,36 @@
+# Nord Theme Colors
+# https://www.nordtheme.com/docs/colors-and-palettes
+
+# Polar Night
+export NORD0="#2E3440"  # background
+export NORD1="#3B4252"
+export NORD2="#434C5E"
+export NORD3="#4C566A"  # comment / border
+
+# Snow Storm
+export NORD4="#D8DEE9"  # foreground
+export NORD5="#E5E9F0"
+export NORD6="#ECEFF4"
+
+# Frost
+export NORD7="#8FBCBB"
+export NORD8="#88C0D0"  # accent cyan
+export NORD9="#81A1C1"  # accent blue
+export NORD10="#5E81AC"
+
+# Aurora
+export NORD11="#BF616A"  # red / error
+export NORD12="#D08770"  # orange / warning
+export NORD13="#EBCB8B"  # yellow
+export NORD14="#A3BE8C"  # green / success
+export NORD15="#B48EAD"  # purple
+
+# Defaults
+export COLOR_BG="$NORD0"
+export COLOR_FG="$NORD4"
+export COLOR_ACCENT="$NORD8"
+export COLOR_BORDER="$NORD3"
+export COLOR_SUCCESS="$NORD14"
+export COLOR_WARNING="$NORD13"
+export COLOR_ERROR="$NORD11"
+export COLOR_COMMENT="$NORD3"
