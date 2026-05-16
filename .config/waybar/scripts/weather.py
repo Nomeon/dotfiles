@@ -1,120 +1,74 @@
 #!/usr/bin/env python3
 import json
+import re
 import requests
-from datetime import datetime
+from pathlib import Path
 
-weather = requests.get("https://wttr.in/?format=j1&u").json()  # Celsius
+# --- Load colors from theme.css ---
+theme_path = Path.home() / ".config/waybar/theme.css"
+THEME = {}
 
-# Nord palette
-NORD = {
-    'snow': '#88C0D0',
-    'cloud': '#81A1C1',
-    'clear': '#EBCB8B',
-    'rain': '#88C0D0',
-    'storm': '#BF616A',
-    'fog': '#D8DEE9',
+with theme_path.open() as f:
+    for line in f:
+        if match := re.match(r"@define-color\s+(\S+)\s+(#[0-9A-Fa-f]{6});", line.strip()):
+            key, value = match.groups()
+            THEME[key] = value
+
+# --- Icon definitions by weather type ---
+THEME_ICONS = {
+    'clear':  {'icon': '', },
+    'cloud':  {'icon': '', },
+    'fog':    {'icon': '', },
+    'rain':   {'icon': '', },
+    'storm':  {'icon': '', },
+    'snow':   {'icon': '', },
 }
 
-def colored(icon, color, size=12):
-    return f'<span foreground="{color}" size="{1000*size}">{icon}</span>'
+def styled_icon(category, size=9):
+    info = THEME_ICONS.get(category, {'icon': '❓'})
+    return f'<span size="{1000*size}" rise="2000">{info["icon"]}</span>'
 
-WEATHER_CODES = {
-    '113': colored('☀️', NORD['clear']),
-    '116': colored('⛅️', NORD['cloud']),
-    '119': colored('☁️', NORD['cloud']),
-    '122': colored('☁️', NORD['cloud']),
-    '143': colored('🌫', NORD['fog']),
-    '176': colored('🌦', NORD['rain']),
-    '179': colored('🌧', NORD['rain']),
-    '182': colored('🌧', NORD['rain']),
-    '185': colored('🌧', NORD['rain']),
-    '200': colored('⛈', NORD['storm']),
-    '227': colored('🌨', NORD['snow']),
-    '230': colored('❄️', NORD['snow']),
-    '248': colored('🌫', NORD['fog']),
-    '260': colored('🌫', NORD['fog']),
-    '263': colored('🌦', NORD['rain']),
-    '266': colored('🌦', NORD['rain']),
-    '281': colored('🌧', NORD['rain']),
-    '284': colored('🌧', NORD['rain']),
-    '293': colored('🌦', NORD['rain']),
-    '296': colored('🌦', NORD['rain']),
-    '299': colored('🌧', NORD['rain']),
-    '302': colored('🌧', NORD['rain']),
-    '305': colored('🌧', NORD['rain']),
-    '308': colored('🌧', NORD['rain']),
-    '311': colored('🌧', NORD['rain']),
-    '314': colored('🌧', NORD['rain']),
-    '317': colored('🌧', NORD['rain']),
-    '320': colored('🌨', NORD['snow']),
-    '323': colored('🌨', NORD['snow']),
-    '326': colored('🌨', NORD['snow']),
-    '329': colored('❄️', NORD['snow']),
-    '332': colored('❄️', NORD['snow']),
-    '335': colored('❄️', NORD['snow']),
-    '338': colored('❄️', NORD['snow']),
-    '350': colored('🌧', NORD['rain']),
-    '353': colored('🌦', NORD['rain']),
-    '356': colored('🌧', NORD['rain']),
-    '359': colored('🌧', NORD['rain']),
-    '362': colored('🌧', NORD['rain']),
-    '365': colored('🌧', NORD['rain']),
-    '368': colored('🌨', NORD['snow']),
-    '371': colored('❄️', NORD['snow']),
-    '374': colored('🌧', NORD['rain']),
-    '377': colored('🌧', NORD['rain']),
-    '386': colored('⛈', NORD['storm']),
-    '389': colored('🌩', NORD['storm']),
-    '392': colored('⛈', NORD['storm']),
-    '395': colored('❄️', NORD['snow']),
+# --- Map weather codes to categories ---
+WEATHER_CATEGORIES = {
+    '113': 'clear',
+    '116': 'cloud', '119': 'cloud', '122': 'cloud',
+    '143': 'fog', '248': 'fog', '260': 'fog',
+    '176': 'rain', '179': 'rain', '182': 'rain', '185': 'rain',
+    '263': 'rain', '266': 'rain', '281': 'rain', '284': 'rain',
+    '293': 'rain', '296': 'rain', '299': 'rain', '302': 'rain',
+    '305': 'rain', '308': 'rain', '311': 'rain', '314': 'rain',
+    '317': 'rain', '350': 'rain', '353': 'rain', '356': 'rain',
+    '359': 'rain', '362': 'rain', '365': 'rain', '374': 'rain',
+    '377': 'rain',
+    '200': 'storm', '386': 'storm', '389': 'storm', '392': 'storm',
+    '227': 'snow', '230': 'snow', '320': 'snow', '323': 'snow',
+    '326': 'snow', '329': 'snow', '332': 'snow', '335': 'snow',
+    '338': 'snow', '368': 'snow', '371': 'snow', '395': 'snow',
 }
 
-def format_time(time):
-    return time.replace("00", "").zfill(2)
-
-def format_temp(tempC):
-    return (tempC + "°C").ljust(4)
-
-def format_chances(hour):
-    chances = {
-        "chanceoffog": "Fog",
-        "chanceofrain": "Rain",
-        "chanceofsnow": "Snow",
-        "chanceofsunshine": "Sun",
-        "chanceofthunder": "Thunder"
-    }
-    return ", ".join(f"{label} {hour[key]}%" for key, label in chances.items() if int(hour[key]) > 0)
-
+# --- Fetch weather data ---
+weather = requests.get("https://wttr.in/?format=j1&u").json()
 current = weather['current_condition'][0]
-icon = WEATHER_CODES.get(current['weatherCode'], '❓')
+area = weather['nearest_area'][0]['areaName'][0]['value']
+
+code = current['weatherCode']
+category = WEATHER_CATEGORIES.get(code, 'clear')
+icon = styled_icon(category)
+
+desc = current['weatherDesc'][0]['value']
+temp = current['temp_C']
 feels = current['FeelsLikeC']
 wind = current['windspeedKmph']
 humidity = current['humidity']
-desc = current['weatherDesc'][0]['value']
-temp = current['temp_C']
 
-data = {
+# --- Output JSON for Waybar ---
+print(json.dumps({
     "text": f"{icon} {feels}°C",
-    "tooltip": f"<b>{desc} ({temp}°C)</b>\nFeels like: {feels}°C\nWind: {wind} Km/h\nHumidity: {humidity}%\n"
-}
-
-for i, day in enumerate(weather['weather']):
-    if i > 2:
-        break
-    label = ["Today", "Tomorrow", "Day After"][i]
-    maxtemp = day['maxtempC']
-    mintemp = day['mintempC']
-    sunrise = day['astronomy'][0]['sunrise']
-    sunset = day['astronomy'][0]['sunset']
-    data['tooltip'] += f"\n<b>{label} ({day['date']})</b>\n⬆️ {maxtemp}° ⬇️ {mintemp}° 🌅 {sunrise} 🌇 {sunset}\n"
-    for hour in day['hourly']:
-        if i == 0 and int(format_time(hour['time'])) < datetime.now().hour - 2:
-            continue
-        time_str = format_time(hour['time'])
-        h_icon = WEATHER_CODES.get(hour['weatherCode'], '❓')
-        h_temp = format_temp(hour['FeelsLikeC'])
-        desc = hour['weatherDesc'][0]['value']
-        chance = format_chances(hour)
-        data['tooltip'] += f"{time_str} {h_icon} {h_temp} {desc}, {chance}\n"
-
-print(json.dumps(data))
+    "tooltip": (
+        f"<b>{area}</b>\n"
+        f"{desc} ({temp}°C)\n"
+        f"Feels like: {feels}°C\n"
+        f"Wind: {wind} Km/h\n"
+        f"Humidity: {humidity}%"
+    )
+}))

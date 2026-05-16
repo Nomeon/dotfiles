@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~/.config/themes/nord.theme
 
 cat <<EOF > ~/.config/kitty/kitty.conf
 font_family     FiraCode Nerd Font
@@ -7,36 +6,44 @@ bold_font       auto
 italic_font     auto
 font_size       11.0
 
-# Nord Colors
-background              ${COLOR_BG}
-foreground              ${COLOR_FG}
-selection_background    ${NORD3}
-selection_foreground    ${NORD6}
-cursor                  ${COLOR_FG}
-cursor_text_color       ${COLOR_BG}
+# Themed Colors
+background              ${COLOR_BACKGROUND}
+foreground              ${COLOR_FOREGROUND}
+selection_background    ${COLOR_HIGHLIGHT}
+selection_foreground    ${COLOR_BACKGROUND}
+cursor                  ${COLOR_FOREGROUND}
+cursor_text_color       ${COLOR_BACKGROUND}
 
 # Normal colors
-color0  ${NORD1}
-color1  ${NORD11}
-color2  ${NORD14}
-color3  ${NORD13}
-color4  ${NORD9}
-color5  ${NORD15}
-color6  ${NORD8}
-color7  ${NORD5}
+# black
+color0  ${COLOR_BACKGROUND}
+# red
+color1  ${COLOR_ERROR}
+# green
+color2  ${COLOR_SUCCESS}
+# yellow
+color3  ${COLOR_WARNING}
+# blue
+color4  ${COLOR_ACCENT}
+# magenta
+color5  ${COLOR_HIGHLIGHT}
+# cyan
+color6  ${COLOR_INFO}
+# white
+color7  ${COLOR_FOREGROUND}
 
 # Bright colors
-color8  ${NORD3}
-color9  ${NORD11}
-color10 ${NORD14}
-color11 ${NORD13}
-color12 ${NORD9}
-color13 ${NORD15}
-color14 ${NORD7}
-color15 ${NORD6}
+color8  ${COLOR_MUTED}
+color9  ${COLOR_ERROR}
+color10 ${COLOR_SUCCESS}
+color11 ${COLOR_WARNING}
+color12 ${COLOR_ACCENT}
+color13 ${COLOR_HIGHLIGHT}
+color14 ${COLOR_INFO}
+color15 ${COLOR_FOREGROUND}
 
-# Glass effect
-background_opacity    0.90
+# UI
+background_opacity    0.8
 blur                  true
 window_padding_width  4
 EOF

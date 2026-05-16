@@ -1,22 +1,22 @@
 {
   "layer": "top",
-  "position": "top",
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock", "custom/weather"],
   "modules-right": ["pulseaudio", "backlight", "battery", "network", "bluetooth", "custom/power"],
 
   "hyprland/workspaces": {
     "on-click": "activate",
-    "format": "{name}",
     "all-outputs": false,
     "persistent-workspaces": {
-      "HDMI-A-1": [1, 2, 3, 4, 5]
+      "*": 4
     }
   },
 
   "clock": {
     "interval": 60,
-    "format": "{:%A, %H:%M}",
+    // Include the month and day of the week in the format, like Wednesday, 30 July, 14:30
+    "format": "{:%A, %d %B %H:%M}",
+    
     "tooltip": false
   },
 
@@ -24,8 +24,7 @@
     "exec": "~/.config/waybar/scripts/weather.py",
     "interval": 900,
     "return-type": "json",
-    "format": "{}",
-    "tooltip": false
+    "format": "{}"
   },
 
   "pulseaudio": {
@@ -45,6 +44,8 @@
 
   "battery": {
     "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰂄 {capacity}%",
     "format-icons": ["󰁺", "󰁼", "󰁾", "󰂁", "󰁹"]
   },
 

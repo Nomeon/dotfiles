@@ -1,8 +1,14 @@
+@import "/home/nomeon/.config/wofi/theme.css";
+
+* {
+  border-radius: 0;
+}
+
 window {
   margin: 0px;
-  border: 2px solid #4C566A;
-  background-color: rgba(46, 52, 64, 0.9); /* NORD0 with transparency */
-  border-radius: 6px;
+  border: 2px solid @color4;
+  background-color: @background;
+  border-radius: 0px;
   font-family: "FiraCode Nerd Font";
   font-size: 14px;
 }
@@ -11,21 +17,21 @@ window {
   margin: 8px;
   padding: 6px 10px;
   border: none;
-  border-radius: 4px;
-  background-color: #3B4252; /* NORD1 */
-  color: #D8DEE9;             /* NORD4 */
+  border-radius: 0;
+  background-color: @background;
+  color: @foreground;
+  caret-color: @accent;
 }
 
-#inner-box {
-  margin: 8px;
-  padding: 0px;
+#inner-box,
+#outer-box {
   background-color: transparent;
+  margin: 0;
+  padding: 0;
 }
 
 #outer-box {
-  margin: 4px;
-  padding: 0px;
-  background-color: transparent;
+  padding: 6px;
 }
 
 #scroll {
@@ -34,14 +40,27 @@ window {
 }
 
 #entry {
-  padding: 6px 10px;
-  margin: 2px 0;
-  border-radius: 4px;
+  padding: 10px 10px;
+  margin: 2px 10px;
+  border-radius: 0;
   background-color: transparent;
-  color: #D8DEE9; /* NORD4 */
+  color: @foreground;
 }
 
 #entry:selected {
-  background-color: #88C0D0; /* NORD8 */
-  color: #2E3440;            /* NORD0 */
+  background-color: @color4;
+  color: @background;
+  font-weight: bold;
+}
+
+#entry:drop(active) {
+  background-color: @highlight;
+}
+
+#text {
+  color: @foreground;
+}
+
+#text:selected {
+  background-color: @color4;
 }

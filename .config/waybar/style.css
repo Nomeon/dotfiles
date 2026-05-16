@@ -1,51 +1,82 @@
+@import url("theme.css");
+
 * {
   border: none;
-  font-family: FiraCode Nerd Font, sans-serif;
+  font-family: "FiraCode Nerd Font", sans-serif;
   font-size: 13px;
-  padding: 0 6px;
+  min-height: 0;
+  border: none;
 }
 
 window#waybar {
-  background-color: transparent; /* NORD0 */
-  color: #D8DEE9; /* NORD4 */
+  background-color: transparent;
+  color: @foreground;
   border-radius: 8px;
-  margin: 6px 6px 0 6px;
 }
 
-#clock, #custom-weather, #battery, #network, #bluetooth, #backlight, #pulseaudio, #custom-power {
-  background-color: #3B4252;
+.modules-left {
+  margin-left: 12px;
+}
+
+.modules-right {
+  margin-right: 12px;
+}
+
+#clock,
+#battery,
+#network,
+#bluetooth,
+#backlight,
+#pulseaudio,
+#custom-power {
+  background-color: @color8;
   padding: 4px 12px;
-  margin: 4px;
-  border-radius: 8px;
-}
-
-#clock {
-  background-color: #5E81AC;
-  color: #ECEFF4;
+  margin: 0 4px;
+  margin-top: 12px;
+  color: @foreground;
 }
 
 #custom-weather {
-  background-color: #81A1C1;
-  color: #2E3440;
+  background-color: @color4;
+  margin-top: 12px;
+  color: @background;
+  padding: 4px 12px;
+  margin-left: 4px;
 }
 
-#left, #center, #right {
-  background-color: rgba(46, 52, 64, 0.6); /* Nord1 with alpha */
-  border-radius: 16px;
+#clock {
+  background-color: @color4;
+  color: @background;
+}
+
+#left,
+#center,
+#right {
+  border-radius: 0px;
   padding: 6px 12px;
   margin: 4px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 8px @color8;
+}
+
+#workspaces {
+  margin-top: 12px;
+  margin-left: 4px;
+  padding: 0px;
 }
 
 #workspaces button {
-  margin: 2px;
-  padding: 0 8px;
-  border-radius: 8px;
-  background-color: transparent;
-  color: #81A1C1;
+  background-color: @color8;
+  color: @foreground;
+  border-radius: 0px;
+  margin-right: 8px;
 }
 
 #workspaces button.active {
-  background-color: #88C0D0;
-  color: #2E3440;
+  background-color: @color4;
+  color: @background;
+}
+
+#workspaces button:hover {
+  background-color: @color6;
+  color: @background;
 }

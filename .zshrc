@@ -27,7 +27,6 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.config/themes/nord.theme
 
 fopen() {
   local file
@@ -35,13 +34,32 @@ fopen() {
   ${1:-nano} "$file"
 }
 
-# Silent SSH Agent + Key Load
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-  eval "$(ssh-agent -s)" > /dev/null
-fi
-
-# Add key silently if not loaded
-ssh-add -l | grep -q "id_ed25519" || ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1
-
 export PATH="$HOME/.local/bin:$PATH"
 
+export FLYCTL_INSTALL="/home/nomeon/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+eval "$(zoxide init --cmd cd zsh)"
+# bun completions
+[ -s "/home/nomeon/.bun/_bun" ] && source "/home/nomeon/.bun/_bun"
+
+# Claude issues workaround
+ANTHOROPIC_API_KEY=""
+
+ls() {
+  eza --icons=auto --group-directories-first "$@"
+}
+
+alias ll='eza --icons=auto -a -l --group-directories-first --git'
+
+# Zed editor
+zed() {
+  zeditor "$@"
+}
+
+# fnm
+FNM_PATH="/home/nomeon/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
