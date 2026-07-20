@@ -52,6 +52,9 @@ ls() {
 
 alias ll='eza --icons=auto -a -l --group-directories-first --git'
 
+# Kitten SSH alias
+alias kssh='kitten ssh'
+
 # Zed editor
 zed() {
   zeditor "$@"
@@ -63,3 +66,11 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
+
+# Adjust NODE_OPTIONS for better performance with Node.js
+export NODE_OPTIONS="--max-old-space-size=4096"
+
+# For Bun package manager
+export PATH="/home/nomeon/.bun/bin:$PATH"
+
+export PATH="/home/nomeon/.pixi/bin:$PATH"

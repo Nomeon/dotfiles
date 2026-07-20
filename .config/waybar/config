@@ -32,7 +32,8 @@
     "format-muted": " Muted",
     "format-icons": ["", "", ""],
     "scroll-step": 5,
-    "on-click": "pavucontrol"
+    // "on-click": "pavucontrol"
+    "on-click": "kitty --class wiremix -e wiremix"
   },
 
   "backlight": {
@@ -54,17 +55,17 @@
     "format-ethernet": "󰈁 {ipaddr}",
     "format-disconnected": "󰖪",
     "tooltip": false,
-    "on-click": "networkmanager_dmenu"
+    "on-click": "kitty --class wlctl -e wlctl"
   },
-
+  
   "bluetooth": {
-      "format-on": "󰂯",
-      "format-off": "󰂲",
-      "format-disabled": "", // an empty format will hide the module
-      "format-connected": "󰂱 {num_connections}",
-      "tooltip-format-connected": "{device_enumerate}",
-      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-      "on-click": "~/.config/waybar/scripts/bluetooth_menu.sh"
+    "format-on": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "",
+    "format-connected": "󰂱 {num_connections}",
+    "tooltip-format-connected": "{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "on-click": "overskride"
   },
   "custom/power": {
     "format": "󰐥",

@@ -185,6 +185,44 @@ cat > "$OPENCODE_CONFIG" <<EOF
 }
 EOF
 
+# === Snappy Switcher Theme ===
+
+SNAPPY_CONFIG="$HOME/.config/snappy-switcher/config.ini"
+
+case "$THEME_NAME" in
+  Catppuccin)
+    SNAPPY_THEME="catppuccin-mocha.ini"
+    ;;
+  Tokyo-Night-Storm)
+    SNAPPY_THEME="tokyo-night.ini"
+    ;;
+  Nord)
+    SNAPPY_THEME="nord.ini"
+    ;;
+  *)
+    SNAPPY_THEME="snappy-slate.ini"
+    ;;
+esac
+
+python <<EOF
+import re
+from pathlib import Path
+
+path = Path("$SNAPPY_CONFIG")
+content = path.read_text()
+
+content = re.sub(
+    r'(?m)^name\s*=\s*.*$',
+    'name = $SNAPPY_THEME',
+    content
+)
+
+path.write_text(content)
+EOF
+
+pkill snappy-switcher
+snappy-switcher --daemon &
+
 # === Notify ===
 
 notify-send "Theme applied" "Switched to '$THEME_NAME'"

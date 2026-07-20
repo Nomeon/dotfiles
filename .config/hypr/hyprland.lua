@@ -6,7 +6,7 @@ hl.monitor({
     output   = "",
     mode     = "preferred",
     position = "auto",
-    scale    = 1.25,
+    scale    = 1.0,
 })
 
 ----------------
@@ -24,10 +24,15 @@ local browser     = "firefox"
 
 hl.on("hyprland.start", function()
     hl.exec_cmd("nm-applet")
+    hl.exec_cmd("snappy-switcher --daemon")
     hl.exec_cmd("waybar")
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("systemctl --user start hyprpolkitagent")
-    hl.exec_cmd("kitty --class floating-term -e sh -c 'fastfetch; read'")
+    hl.exec_cmd("clipse -listen")
+    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP HYPRLAND_INSTANCE_SIGNATURE")
+    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP HYPRLAND_INSTANCE_SIGNATURE")
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
+    hl.exec_cmd("kitty --class floating-term -e zsh -c 'fastfetch; read -sk 1'")
 end)
 
 ---------------------
@@ -130,14 +135,26 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- Snappy-switcher alt+tab
+hl.bind("ALT + Tab", hl.dsp.exec_cmd("snappy-switcher next --mod alt"),
+    { description = "Snappy Switcher" })
+hl.bind("SUPER + TAB", hl.dsp.exec_cmd("snappy-switcher next --workspace --mod super"),
+    { description = "Snappy Switcher (Workspace)" })
+
+-- Clipse
+hl.bind(
+    mainMod .. " + V",
+    hl.dsp.exec_cmd("kitty --class clipse -e clipse")
+)
+
 -------------------
 --- WINDOWRULES ---
 -------------------
 
 hl.window_rule({
-    name = "transparent-zed",
+    name = "transparent-code",
     match = {
-        class = "dev.zed.Zed",
+        class = "code",
     },
     opacity = "0.9 0.8"
 })
@@ -148,8 +165,17 @@ hl.window_rule({
         class = "floating-term",
     },
     float = true,
-    size = { 880, 400 },
+    size = { 1000, 450 },
     move = { 140, 250 },
+})
+
+hl.window_rule({
+    name = "clipse",
+    match = {
+        class = "clipse",
+    },
+    float = true,
+    size = { 622, 652 },
 })
 
 ----------------------
@@ -165,4 +191,14 @@ hl.config({
             inactive_border = theme.inactive_border,
         },
     },
+})
+
+-- Second monitor
+
+hl.monitor({
+    output = "HDMI-A-1",
+    mode = "preferred",
+    position = "auto",
+    scale = 1.0,
+    mirror = "eDP-1"
 })
