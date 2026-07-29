@@ -113,34 +113,6 @@ esac
 # Trigger Themery theme switch inside Neovim
 nvr --servername /tmp/nvimsocket -c "ThemeryLoad \"$THEMERY_NAME\""
 
-# === Opencode Theme Switch ===
-
-OPENCODE_CONFIG="$HOME/.config/opencode/tui.json"
-
-case "$THEME_NAME" in
-  Catppuccin)
-    OPENCODE_THEME="catppuccin-macchiato"
-    ;;
-  Tokyo-Night-Storm)
-    OPENCODE_THEME="tokyonight"
-    ;;
-  Nord)
-    OPENCODE_THEME="nord"
-    ;;
-  *)
-    OPENCODE_THEME="opencode"
-    ;;
-esac
-
-mkdir -p "$(dirname "$OPENCODE_CONFIG")"
-
-cat > "$OPENCODE_CONFIG" <<EOF
-{
-  "\$schema": "https://opencode.ai/tui.json",
-  "theme": "$OPENCODE_THEME"
-}
-EOF
-
 # === Snappy Switcher Theme ===
 
 SNAPPY_CONFIG="$HOME/.config/snappy-switcher/config.ini"

@@ -14,7 +14,6 @@
 
   "clock": {
     "interval": 60,
-    // Include the month and day of the week in the format, like Wednesday, 30 July, 14:30
     "format": "{:%A, %d %B %H:%M}",
     
     "tooltip": false
@@ -32,7 +31,6 @@
     "format-muted": " Muted",
     "format-icons": ["", "", ""],
     "scroll-step": 5,
-    // "on-click": "pavucontrol"
     "on-click": "kitty --class wiremix -e wiremix"
   },
 
