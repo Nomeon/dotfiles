@@ -28,11 +28,8 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-fopen() {
-  local file
-  file=$(fzf --preview 'bat --style=numbers --color=always --line-range=:500 {}') || return
-  ${1:-nano} "$file"
-}
+alias fopen='tv files'
+alias ftext='tv text'
 
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -54,11 +51,6 @@ alias ll='eza --icons=auto -a -l --group-directories-first --git'
 
 # Kitten SSH alias
 alias kssh='kitten ssh'
-
-# Zed editor
-zed() {
-  zeditor "$@"
-}
 
 # fnm
 FNM_PATH="/home/nomeon/.local/share/fnm"

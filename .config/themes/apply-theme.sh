@@ -113,50 +113,6 @@ esac
 # Trigger Themery theme switch inside Neovim
 nvr --servername /tmp/nvimsocket -c "ThemeryLoad \"$THEMERY_NAME\""
 
-# === Zed Theme Switch ===
-
-ZED_SETTINGS="$HOME/.config/zed/settings.json"
-
-case "$THEME_NAME" in
-  Catppuccin)
-    ZED_THEME_NAME="Catppuccin Mocha"
-    ;;
-  Tokyo-Night-Storm)
-    ZED_THEME_NAME="Tokyo Night Storm"
-    ;;
-  Nord)
-    ZED_THEME_NAME="Nord Dark"
-    ;;
-  *)
-    ZED_THEME_NAME="$THEME_NAME"
-    ;;
-esac
-
-python <<EOF
-import re
-from pathlib import Path
-
-path = Path("$ZED_SETTINGS")
-content = path.read_text()
-
-new_theme = """
-"theme": {
-    "mode": "dark",
-    "light": "$ZED_THEME_NAME",
-    "dark": "$ZED_THEME_NAME"
-  }
-"""
-
-content = re.sub(
-    r'"theme"\s*:\s*\{[^}]*\}',
-    new_theme.strip(),
-    content,
-    flags=re.DOTALL
-)
-
-path.write_text(content)
-EOF
-
 # === Opencode Theme Switch ===
 
 OPENCODE_CONFIG="$HOME/.config/opencode/tui.json"
@@ -222,6 +178,42 @@ EOF
 
 pkill snappy-switcher
 snappy-switcher --daemon &
+
+# === Micro Theme Switch ===
+
+MICRO_CONFIG="$HOME/.config/micro/settings.json"
+
+case "$THEME_NAME" in
+  Catppuccin)
+    MICRO_THEME="catppuccin"
+    ;;
+  Tokyo-Night-Storm)
+    MICRO_THEME="tokyo-night"
+    ;;
+  Nord)
+    MICRO_THEME="nord"
+    ;;
+  *)
+    echo "No Micro theme mapping for '$THEME_NAME'"
+    MICRO_THEME=""
+    ;;
+esac
+
+if [[ -n "$MICRO_THEME" ]]; then
+  mkdir -p "$(dirname "$MICRO_CONFIG")"
+  [[ -f "$MICRO_CONFIG" ]] || printf '{}\n' >"$MICRO_CONFIG"
+
+  tmp=$(mktemp)
+
+  if jq --arg theme "$MICRO_THEME" \
+    '.colorscheme = $theme' \
+    "$MICRO_CONFIG" >"$tmp"; then
+    mv "$tmp" "$MICRO_CONFIG"
+  else
+    rm -f "$tmp"
+    echo "Failed to update Micro theme" >&2
+  fi
+fi
 
 # === Notify ===
 

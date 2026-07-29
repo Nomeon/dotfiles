@@ -65,7 +65,8 @@
     "format-connected": "󰂱 {num_connections}",
     "tooltip-format-connected": "{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "on-click": "overskride"
+    "on-click": "kitty --class bluetui -e bluetui",
+    "on-click-right": "sh -c 'bluetoothctl show | grep -q \"Powered: yes\" && bluetoothctl power off || bluetoothctl power on'"
   },
   "custom/power": {
     "format": "󰐥",
